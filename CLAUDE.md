@@ -38,6 +38,10 @@ Full spec (plans, sign-up flow, KPIs, phased plan): the "Apex Suite Integration 
 5. Checks, defects, incidents, hours and DVSA reports are **evidence-grade**: once submitted, never updated or deleted. Corrections are new rows that reference the original.
 6. Driver hours limits come from tenant settings (`daily_driving_limit_minutes`, `daily_duty_limit_minutes`), never hard-coded.
 7. Reporting views use `security_invoker = true` so RLS applies.
+8. Every link between records carries the same tenant: add a `(tenant_id, <column>)` foreign key to the referenced table's `(tenant_id, id)` key for any new link.
+9. Access by role (see `20261021140000_duty_shield_foundations.sql`): **drivers** see only their own checks, defects, hours, incidents, PODs, fuel and profile, plus the company's vans, sites and guides; **staff** (owner, admin, planner, fleet_manager, warehouse, viewer) read everything in their company; **viewers** cannot write; only owner, admin and fleet_manager invite people. Use the helpers `is_tenant_staff`, `is_tenant_writer`, `is_tenant_manager` and `current_driver_id`.
+10. Corrections: a new row with `corrects_id` pointing at the original (never at another correction) and a `correction_reason`. Read hours through `v_duty_days_current`.
+11. Sign-up and joining go through `create_solo_account`, `create_invitation` and `accept_invitation`; apps never insert into `tenants` or `tenant_members` directly. `subscriptions` is written only by server code handling Stripe webhooks.
 
 ## Security
 
