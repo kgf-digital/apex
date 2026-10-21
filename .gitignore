@@ -1,0 +1,27 @@
+# Secrets
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+
+# Dependencies and builds
+node_modules/
+.next/
+out/
+dist/
+build/
+.expo/
+.turbo/
+coverage/
+
+# Supabase local
+supabase/.branches/
+supabase/.temp/
+
+# OS and editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.log
